@@ -1,6 +1,5 @@
 using API.Data;
 using API.Interfaces;
-using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +23,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<IRegistroUsuarioRepository, RegistroUsuarioRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 

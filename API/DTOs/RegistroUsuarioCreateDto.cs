@@ -4,18 +4,18 @@ namespace API.DTOs;
 
 public class RegistroUsuarioCreateDto
 {
-    [Required]
+    [Required(ErrorMessage = "El Nombre es requerido")]
     public string Nombre { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "El Email es requerido")]
     public string Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "El Telefono es requerido")]
     public string Telefono { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "La Fecha es requerida")]
     public DateOnly Fecha { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "La Ciudad y Estado es requerida")]
     public string CiudadEstado { get; set; }
 }

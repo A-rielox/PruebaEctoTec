@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
+using System.Globalization;
 
 namespace API.Controllers;
 
@@ -57,11 +58,13 @@ public class RegistroController : BaseApiController
 
         _repo.AddRegistro(registro);
 
-        
+
+        // ENVIIO DE MAIL
+        var time1 = registro.Fecha.ToString("d \"d\"e MMMM \"d\"el yyyy",
+                  CultureInfo.CreateSpecificCulture("es-MX"));
 
 
 
-              
         string fromMail = _config.GetSection("EmailSender").Value;
         string fromPassword = _config.GetSection("EmailPassword").Value;
 
@@ -70,9 +73,8 @@ public class RegistroController : BaseApiController
         message.Subject = "Test Subject";
         message.To.Add(new MailAddress("arielox.ag@gmail.com"));
 
-        message.Body = "<h3>Estimado " + registro.Nombre + "</h3><br /><p>Hemos recibido sus datos y nos pondremos en contacto con usted en la brevedad posible. Enviaremos un correo con información a su cuenta: " + registro.Email + " </p>" + "<br /><div style=\"width: 100%; font-weight: bold\"><p>Atte.</p><p>Green Leaves</p><p>" + registro.CiudadEstado + " a " + registro.Fecha + "</p></div>";
-        
-        
+        message.Body = "<div style=\"display: flex; justify-content: space-between; align-items: center; padding: 2rem; padding-left: 4rem; padding-right: 4rem; margin-bottom: 2rem; box-shadow: 7px 7px 5px 0px rgba(0, 0, 0, 0.596);  background-color: #54d86a; border-radius: 30px;\"\r\n><h1 class=\"text-center text-light align-self-start display-3 fw-semibold pb-5 espaciado\" >Green Leaves</h1><img src=\"https://res.cloudinary.com/dxrrk3nvu/image/upload/v1685118580/leaf_bjqsxz.png\" style=\"height: 150px;\" /></div>" +
+            "<h3>Estimado " + registro.Nombre + "</h3><br /><p>Hemos recibido sus datos y nos pondremos en contacto con usted en la brevedad posible. Enviaremos un correo con información a su cuenta: " + registro.Email + " </p>" + "<br /><div style=\"width: 100%; font-weight: bold\"><p>Atte.</p><p>Green Leaves</p><p>" + registro.CiudadEstado + " a " + time1 + "</p></div>";
         
         
         message.IsBodyHtml = true;
@@ -85,14 +87,9 @@ public class RegistroController : BaseApiController
         };
 
         smtpClient.Send(message);
+        // LISTO ENVIO
 
 
-
-
-
-
-
-        ////////
 
         if (await _repo.SaveAllAsync())
         {
